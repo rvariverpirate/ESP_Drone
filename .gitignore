@@ -1,0 +1,6 @@
+*.pyc
+*.swp
+rosserial_server/doc/
+*.out
+*.geany
+Arduino_Drone/WiFiLogins.h
