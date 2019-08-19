@@ -36,13 +36,13 @@ ros::Publisher chatter("chatter", &str_msg);
 rosserial_msgs::RPY rpy_msg;
 ros::Publisher rpy("rpy", &rpy_msg);
 
-
 // Make a RPY Command Callback
 void rpy_command_callback(const rosserial_msgs::RPY& rpy_command){
-  //char charVal[10];
-  //dtostrf(rpy_command.roll, 4, 3, charVal);
-  //str_msg.data = "I changed the default chatter message!!";//charVal;
-  Serial.println("RPY callback occured");
+  //char charVal[20];
+  //dtostrf(rpy_command.roll, 20, 4, charVal);
+  //str_msg.data = "I changed the callback message!!";//charVal;
+  //Serial.println("RPY callback occured");
+  debugPWM();
 };
 
 // Create RPY Command Subscriber

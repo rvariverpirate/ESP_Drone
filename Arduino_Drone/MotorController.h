@@ -19,7 +19,7 @@ void sendPWM(int pwmA, int pwmB, int pwmC, int pwmD){
   command += intToString(pwmC);
   command += intToString(pwmD);
   command += "e";
-  Serial.print(command);
+  //Serial.print(command);
   }
 
 void debugPWM(){

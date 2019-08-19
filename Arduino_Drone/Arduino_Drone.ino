@@ -1,12 +1,12 @@
 
 #include "MPU9250_Read.h"
-#include "ESP8266Node.h"
 #include "MotorController.h"
+#include "ESP8266Node.h"
 #include "PID.h"
 
 
 // Intialize motor PWM to 0 duty cycle (Range 0-255)
-int * allPWM;
+double * allPWM;
 
 /* Motor Mapping
 
@@ -64,7 +64,7 @@ void loop() {
     
 
     // Get Control Vars for Roll, Pitch, Yaw and Altitude
-    U_R = PID_inner(IMU_data[0], 0, &roll_PID);
+    /*U_R = PID_inner(IMU_data[0], 0, &roll_PID);
     U_P = PID_inner(IMU_data[1], 0, &roll_PID);
     U_Y = PID_inner(IMU_data[2], 0, &roll_PID);
     U_A = PID_inner(1, 1, &altitude_PID);    
@@ -73,8 +73,9 @@ void loop() {
     allPWM = mapControlVarsToMotors();
 
     // Send the Motor Command to ATMega328 over UART
-    sendPWM(allPWM[0], allPWM[1], allPWM[2], allPWM[3]);
+    //sendPWM(allPWM[0], allPWM[1], allPWM[2], 100);
     //debugPWM();
+    */
     
   } else {
     if(debug_ROS) Serial.println("Trying to connect to ROS");
