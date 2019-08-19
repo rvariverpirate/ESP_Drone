@@ -6,10 +6,22 @@
 
 
 // Intialize motor PWM to 0 duty cycle (Range 0-255)
-int pwm_A = 0;
-int pwm_B = 0;
-int pwm_C = 0;
-int pwm_D = 0;
+int * allPWM;
+
+/* Motor Mapping
+
+   LF[3]-RF[0]
+     |     |
+   LB[2]-RB[1]
+
+ */
+
+// Create Instances of PID States
+struct PID_vals roll_PID;
+struct PID_vals pitch_PID;
+struct PID_vals yaw_PID;
+struct PID_vals altitude_PID;
+
 
 // Debug Modes
 boolean debug_IMU = false;
@@ -51,12 +63,18 @@ void loop() {
     // TODO: Receive User Command
     
 
-    // TODO: Populate PID for Roll, Pitch, Yaw
+    // Get Control Vars for Roll, Pitch, Yaw and Altitude
+    U_R = PID_inner(IMU_data[0], 0, &roll_PID);
+    U_P = PID_inner(IMU_data[1], 0, &roll_PID);
+    U_Y = PID_inner(IMU_data[2], 0, &roll_PID);
+    U_A = PID_inner(1, 1, &altitude_PID);    
+    
+    // Determine Motor PWM Values
+    allPWM = mapControlVarsToMotors();
 
-
-    // Command Motors
-    //sendPWM(0, 100, 0, 100);
-    debugPWM();
+    // Send the Motor Command to ATMega328 over UART
+    sendPWM(allPWM[0], allPWM[1], allPWM[2], allPWM[3]);
+    //debugPWM();
     
   } else {
     if(debug_ROS) Serial.println("Trying to connect to ROS");
