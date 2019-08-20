@@ -67,9 +67,9 @@ void loop() {
     
 
     // Get Control Vars for Roll, Pitch, Yaw and Altitude
-    U_R = PID_inner(IMU_data[0], 0, &roll_PID);//IMU_data[0]
-    U_P = PID_inner(IMU_data[1], 0, &roll_PID);
-    U_Y = PID_inner(IMU_data[2], 0, &roll_PID);
+    U_R = PID_inner(IMU_data[0], rpy_command_global.roll, &roll_PID);
+    U_P = PID_inner(IMU_data[1], rpy_command_global.pitch, &pitch_PID);
+    U_Y = PID_inner(IMU_data[2], rpy_command_global.yaw, &yaw_PID);
     U_A = PID_inner(1, 1, &altitude_PID);    
     
     // Determine Motor PWM Values

@@ -36,13 +36,17 @@ ros::Publisher chatter("chatter", &str_msg);
 rosserial_msgs::RPY rpy_msg;
 ros::Publisher rpy("rpy", &rpy_msg);
 
+// Create Global RPY Command for use by controller
+rosserial_msgs::RPY rpy_command_global;
+
 // Make a RPY Command Callback
 void rpy_command_callback(const rosserial_msgs::RPY& rpy_command){
+  // Store message in global msg for availability
+  rpy_command_global = rpy_command;
   char charVal[20];
   dtostrf(rpy_command.roll, 20, 4, charVal);
   str_msg.data = charVal;
-  //Serial.println("RPY callback occured");
-  //debugPWM();
+  debugPWM();
 };
 
 // Create RPY Command Subscriber
