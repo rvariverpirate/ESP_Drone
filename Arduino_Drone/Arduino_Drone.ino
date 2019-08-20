@@ -47,10 +47,12 @@ void loop() {
     if(debug_IMU){
       Serial.println(String(IMU_data[0], DEC));
       Serial.println(String(IMU_data[1], DEC));
-    };
-    
+    }
+
+    // Publish Debug Message
     chatter.publish( &str_msg );
-    
+
+    // Create Roll Pitch Yaw Message
     rpy_msg.header.frame_id = "/world";
     rpy_msg.header.stamp = nh.now();// timestamp
     rpy_msg.roll = IMU_data[0];// TODO: I have no idea if these are
@@ -59,12 +61,13 @@ void loop() {
 
     // Publish Roll, Pitch, Yaw message
     rpy.publish(&rpy_msg);
-
-    // TODO: Receive User Command
+    
+    // Receive User Command (this is handled by the RPY Command Callback from ROS subscriber)
+    
     
 
     // Get Control Vars for Roll, Pitch, Yaw and Altitude
-    /*U_R = PID_inner(IMU_data[0], 0, &roll_PID);
+    U_R = PID_inner(IMU_data[0], 0, &roll_PID);//IMU_data[0]
     U_P = PID_inner(IMU_data[1], 0, &roll_PID);
     U_Y = PID_inner(IMU_data[2], 0, &roll_PID);
     U_A = PID_inner(1, 1, &altitude_PID);    
@@ -73,9 +76,8 @@ void loop() {
     allPWM = mapControlVarsToMotors();
 
     // Send the Motor Command to ATMega328 over UART
-    //sendPWM(allPWM[0], allPWM[1], allPWM[2], 100);
+    sendPWM(allPWM[0], allPWM[1], allPWM[2], 100);
     //debugPWM();
-    */
     
   } else {
     if(debug_ROS) Serial.println("Trying to connect to ROS");
@@ -83,7 +85,7 @@ void loop() {
   }
   // Publish ROS
   nh.spinOnce();
-  // Loop at about 100Hz (Max)
+  // Loop at about 50Hz (Max)
   delay(10);
   
 }

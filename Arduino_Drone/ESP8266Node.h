@@ -38,11 +38,11 @@ ros::Publisher rpy("rpy", &rpy_msg);
 
 // Make a RPY Command Callback
 void rpy_command_callback(const rosserial_msgs::RPY& rpy_command){
-  //char charVal[20];
-  //dtostrf(rpy_command.roll, 20, 4, charVal);
-  //str_msg.data = "I changed the callback message!!";//charVal;
+  char charVal[20];
+  dtostrf(rpy_command.roll, 20, 4, charVal);
+  str_msg.data = charVal;
   //Serial.println("RPY callback occured");
-  debugPWM();
+  //debugPWM();
 };
 
 // Create RPY Command Subscriber
@@ -77,23 +77,10 @@ void setupConnection()
   Serial.println(nh.getHardware()->getLocalIP());
   
   
-  // Start to be polite
+  // Advertise Published Topics
   nh.advertise(chatter);
   nh.advertise(rpy);
-}
 
-void refference()
-{
-
-  if (nh.connected()) {
-    Serial.println("Connected");
-    // Say hello
-    //.data = hello; STR msg
-    //chatter.publish( & );
-  } else {
-    Serial.println("Not Connected");
-  }
-  nh.spinOnce();
-  // Loop exproximativly at 1Hz
-  delay(1000);
+  // Subscribe to Topics
+  nh.subscribe(rpy_command_sub);
 }
