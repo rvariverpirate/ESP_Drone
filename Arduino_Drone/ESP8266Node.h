@@ -46,7 +46,7 @@ void rpy_command_callback(const rosserial_msgs::RPY& rpy_command){
   char charVal[20];
   dtostrf(rpy_command.roll, 20, 4, charVal);
   str_msg.data = charVal;
-  debugPWM();
+  //MC.debugPWM();
 };
 
 // Create RPY Command Subscriber

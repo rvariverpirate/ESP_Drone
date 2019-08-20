@@ -1,6 +1,9 @@
 
+#define BAUD_RATE 4800
 #include "MPU9250_Read.h"
 #include "MotorController.h"
+// Create the Motor Controller Object
+MotorController MC;
 #include "ESP8266Node.h"
 #include "PID.h"
 
@@ -29,7 +32,7 @@ boolean debug_ROS = false;
 boolean debug_PWM = !debug_ROS;
 
 void setup() {
-  Serial.begin(4800);// Can probably bump this up when we add Crystal Oscilator to ATMega
+  Serial.begin(BAUD_RATE);// Can probably bump this up when we add Crystal Oscilator to ATMega
   setupIMU();// Setup i2c connection to IMU
   setupConnection();// Setup network connection and ROS for ESP8266
   str_msg.data = "This is the default message";
@@ -76,12 +79,12 @@ void loop() {
     allPWM = mapControlVarsToMotors();
 
     // Send the Motor Command to ATMega328 over UART
-    sendPWM(allPWM[0], allPWM[1], allPWM[2], 100);
-    //debugPWM();
+    MC.sendPWM(allPWM[0], allPWM[1], allPWM[2], 100);
+    //MC.debugPWM();
     
   } else {
     if(debug_ROS) Serial.println("Trying to connect to ROS");
-    else sendPWM(0, 100, 0, 100);
+    else MC.sendPWM(0, 100, 0, 100);
   }
   // Publish ROS
   nh.spinOnce();
